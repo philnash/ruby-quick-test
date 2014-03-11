@@ -1,18 +1,22 @@
 {
   "name": "Ruby Quick Test",
   "main": "./lib/ruby-quick-test",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Run ruby test files quickly.",
-  "keywords": ["ruby", "test"],
+  "keywords": [
+    "ruby",
+    "test"
+  ],
   "homepage": "https://github.com/philnash/ruby-quick-test",
   "bugs": "https://github.com/philnash/ruby-quick-test/issues",
   "author": "Phil Nash",
-  "activationEvents": ["ruby-quick-test:run-tests"],
+  "activationEvents": [
+    "ruby-quick-test:run-tests"
+  ],
   "repository": "https://github.com/philnash/ruby-quick-test",
   "license": "MIT",
   "engines": {
     "atom": ">0.50.0"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
