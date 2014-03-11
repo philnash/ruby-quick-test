@@ -1,5 +1,5 @@
 {
-  "name": "Ruby Quick Test",
+  "name": "ruby-quick-test",
   "main": "./lib/ruby-quick-test",
   "version": "0.1.0",
   "description": "Run ruby test files quickly.",
