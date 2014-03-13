@@ -1,7 +1,9 @@
 {BufferedProcess} = require 'atom'
 
-module.exports =
 class TestRunner
+  command: 'ruby'
+  args: ['-I', 'test']
+  
   constructor: (testFile, callback)->
     @testResult = ''
     @callback = callback
@@ -10,8 +12,8 @@ class TestRunner
   runTests: ->
     @testResult = ''
     new BufferedProcess
-      command: 'ruby'
-      args: ['-I', 'test', @testFile]
+      command: @command
+      args: @args.concat(@testFile)
       options:
         cwd: atom.project.getPath()
       stdout: @collectResults
@@ -28,3 +30,11 @@ class TestRunner
 
   returnCallback: =>
     @callback(@testFile, @testResult)
+
+class RspecTestRunner extends TestRunner
+  command: 'rspec'
+  args: []
+
+module.exports =
+  TestRunner: TestRunner
+  RspecTestRunner: RspecTestRunner

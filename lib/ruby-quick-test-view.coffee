@@ -1,5 +1,5 @@
 {$, View} = require 'atom'
-TestRunner = require './test_runner'
+{TestRunner, RspecTestRunner} = require './test_runner'
 
 module.exports =
 class RubyQuickTestView extends View
@@ -38,14 +38,17 @@ class RubyQuickTestView extends View
   togglePanel: =>
     if @hasParent() then @hidePanel() else @showPanel()
 
+  newTestRunner: (klass)->
+    delete @testRunner if @testRunner?
+    @testRunner = new klass(@activeFile(), @render)
+    @testRunner.runTests()
+    @showPanel()
+
   runTests: (e)=>
-    if @isRubyTestFile()
-      delete @testRunner if @testRunner?
-      @testRunner = new TestRunner(@activeFile(), @render)
-      @testRunner.runTests()
-      @showPanel()
-    else
-      e.abortKeyBinding()
+    switch @testFileType()
+      when 'test' then @newTestRunner(TestRunner)
+      when 'spec' then @newTestRunner(RspecTestRunner)
+      else e.abortKeyBinding()
 
   reRunTests: (e)=>
     if @testRunner?
@@ -57,5 +60,5 @@ class RubyQuickTestView extends View
   activeFile: ->
     atom.project.relativize(atom.workspace.getActiveEditor().buffer.file.path)
 
-  isRubyTestFile: ->
-    !!@activeFile().match(/_test\.rb$/)
+  testFileType: ->
+    if matches = @activeFile().match(/_(test|spec)\.rb$/) then matches[1]
