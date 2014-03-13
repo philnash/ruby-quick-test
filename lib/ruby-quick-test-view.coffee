@@ -12,7 +12,6 @@ class RubyQuickTestView extends View
         @pre '', outlet: 'results'
 
   initialize: (serializeState) ->
-    @testRunner = new TestRunner(this)
     atom.workspaceView.command "ruby-quick-test:run-tests", @runTests
     atom.workspaceView.command "ruby-quick-test:re-run-last-test", @reRunTests
     atom.workspaceView.command "ruby-quick-test:toggle", @togglePanel
@@ -41,14 +40,16 @@ class RubyQuickTestView extends View
 
   runTests: (e)=>
     if @isRubyTestFile()
-      @testRunner.runTests(@activeFile(), @render)
+      delete @testRunner if @testRunner?
+      @testRunner = new TestRunner(@activeFile(), @render)
+      @testRunner.runTests()
       @showPanel()
     else
       e.abortKeyBinding()
 
   reRunTests: (e)=>
-    if @testRunner.hasTestFile()
-      @testRunner.reRunTests()
+    if @testRunner?
+      @testRunner.runTests()
       @showPanel()
     else
       e.abortKeyBinding()

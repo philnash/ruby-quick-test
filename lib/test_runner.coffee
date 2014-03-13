@@ -2,27 +2,13 @@
 
 module.exports =
 class TestRunner
-  constructor: (view)->
-    @view = view
-    @testResult = ''
-    @testFile = ''
-
-  hasTestFile: ()->
-    @testFile.length > 0
-
-  runTests: (testFile, callback)->
+  constructor: (testFile, callback)->
     @testResult = ''
     @callback = callback
     @testFile = testFile
-    @createProcess()
-    @returnCallback()
 
-  reRunTests: ()->
+  runTests: ->
     @testResult = ''
-    @createProcess()
-    @returnCallback()
-
-  createProcess: ()->
     new BufferedProcess
       command: 'ruby'
       args: ['-I', 'test', @testFile]
@@ -31,6 +17,7 @@ class TestRunner
       stdout: @collectResults
       stderr: @collectResults
       exit: @exit
+    @returnCallback()
 
   collectResults: (output)=>
     @testResult += output.toString()
