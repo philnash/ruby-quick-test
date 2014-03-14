@@ -10,9 +10,11 @@ Use the Atom package manager, which can be found in the Settings view or run apm
 
 ## Usage
 
-Ruby Quick Test can be used to quickly run a test file with a file name that matches the pattern `/_test\.rb$/`. When the active editor is such a file, you can run the tests with the key combination `cmd-ctrl-t` or by using the command palette (`cmd-shift-p`).
+Ruby Quick Test can be used to quickly run a test file with a file name that matches the pattern `/_(test|spec)\.rb$/`. Test files ending in `_test.rb` will be run using the `ruby` command, whereas files ending `_spec.rb` will be run with the `rspec` command.
 
-This currently doesn't cover Rspec or MiniTest::Spec style files, but support is planned for those soon.
+When the active editor is using such a file, you can run the tests with the key combination `cmd-ctrl-t` or by using the command palette (`cmd-shift-p`).
+
+This currently doesn't cover `MiniTest::Spec` style files, but support is planned for those soon.
 
 ### Commands
 
@@ -23,5 +25,7 @@ This currently doesn't cover Rspec or MiniTest::Spec style files, but support is
 ## Todo
 
 * Tests!
-* Rspec/MiniTest::Spec support
+* `MiniTest::Spec` support
+* Support for running individual tests
+* Run the entire test suite using `rake test` or `rake spec`
 * [Issues/pull requests](https://github.com/philnash/ruby-quick-test/issues) welcome
