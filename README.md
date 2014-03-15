@@ -20,6 +20,20 @@ This currently doesn't cover Rspec or MiniTest::Spec style files, but support is
 * `cmd-ctrl-e` - Re-run the previous test file
 * `cmd-ctrl-x` - Show/hide the test panel
 
+## RVM
+
+If you are using RVM then you need to make sure Atom is loaded via env so that it has access to your `$PATH`. Otherwise you will get an error like `execvp(): No such file or directory`.
+
+	vim `which atom`
+
+Change:
+
+	open -a $ATOM_PATH -n --args --executed-from="$(pwd)" --pid=$$ $@
+
+to:
+
+	env open -a $ATOM_PATH -n --args --executed-from="$(pwd)" --pid=$$ $@
+
 ## Todo
 
 * Tests!
