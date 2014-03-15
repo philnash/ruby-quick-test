@@ -35,6 +35,11 @@ class RspecTestRunner extends TestRunner
   command: 'rspec'
   args: []
 
+class CucumberTestRunner extends TestRunner
+  command: 'cucumber'
+  args: []
+
 module.exports =
   TestRunner: TestRunner
   RspecTestRunner: RspecTestRunner
+  CucumberTestRunner: CucumberTestRunner
