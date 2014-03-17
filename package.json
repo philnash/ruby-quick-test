@@ -1,7 +1,7 @@
 {
   "name": "ruby-quick-test",
   "main": "./lib/ruby-quick-test",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Run ruby test files quickly.",
   "keywords": [
     "ruby",
