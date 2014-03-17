@@ -1,12 +1,12 @@
 # Ruby Quick Test
 
-Run your ruby test files from within [Atom](http://atom.io). Inspired by [Sublime Test Ruby-Test](https://github.com/maltize/sublime-text-2-ruby-tests).
+Run your `TestUnit`, `RSpec` and `Cucumber` ruby test files from within [Atom](http://atom.io). Inspired by [Sublime Test Ruby-Test](https://github.com/maltize/sublime-text-2-ruby-tests).
 
 ![Ruby Quick Test screenshot](https://raw.github.com/philnash/ruby-quick-test/master/screenshots/ruby-quick-test-demo.png)
 
 ## Installing
 
-Use the Atom package manager, which can be found in the Settings view or run apm install ruby-quick-test from the command line.
+Use the Atom package manager, which can be found in the Settings view or run `apm install ruby-quick-test` from the command line.
 
 ## Usage
 
