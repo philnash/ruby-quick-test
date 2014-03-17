@@ -1,5 +1,5 @@
 {$, View} = require 'atom'
-{TestRunner, RspecTestRunner} = require './test_runner'
+{TestRunner, RspecTestRunner, CucumberTestRunner} = require './test_runner'
 
 module.exports =
 class RubyQuickTestView extends View
@@ -48,6 +48,7 @@ class RubyQuickTestView extends View
     switch @testFileType()
       when 'test' then @newTestRunner(TestRunner)
       when 'spec' then @newTestRunner(RspecTestRunner)
+      when 'feature' then @newTestRunner(CucumberTestRunner)
       else e.abortKeyBinding()
 
   reRunTests: (e)=>
@@ -61,4 +62,7 @@ class RubyQuickTestView extends View
     atom.project.relativize(atom.workspace.getActiveEditor().buffer.file.path)
 
   testFileType: ->
-    if matches = @activeFile().match(/_(test|spec)\.rb$/) then matches[1]
+    if matches = @activeFile().match(/_(test|spec)\.rb$/)
+      matches[1]
+    else if matches = @activeFile().match(/.(feature)$/)
+      matches[1]
