@@ -1,35 +1,38 @@
 {BufferedProcess} = require 'atom'
 
 class TestRunner
-  command: 'ruby'
   args: ['-I', 'test']
-  
+  command: 'ruby'
+  process: BufferedProcess
+
   constructor: (testFile, callback)->
     @testResult = ''
     @callback = callback
     @testFile = testFile
 
-  runTests: ->
-    @testResult = ''
-    new BufferedProcess
-      command: @command
-      args: @args.concat(@testFile)
-      options:
-        cwd: atom.project.getPath()
-      stdout: @collectResults
-      stderr: @collectResults
-      exit: @exit
-    @returnCallback()
-
-  collectResults: (output)=>
+  collectResults: (output) =>
     @testResult += output.toString()
     @returnCallback()
 
-  exit: (code)=>
+  exit: (code) =>
     @returnCallback()
+
+  processParams: ->
+    command: @command
+    args: @args.concat(@testFile)
+    options:
+      cwd: atom.project.getPath()
+    stdout: @collectResults
+    stderr: @collectResults
+    exit: @exit
 
   returnCallback: =>
     @callback(@testFile, @testResult)
+
+  runTests: ->
+    @testResult = ''
+    new @process @processParams()
+    @returnCallback()
 
 class RspecTestRunner extends TestRunner
   command: 'rspec'
