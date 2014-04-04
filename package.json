@@ -11,7 +11,8 @@
   "bugs": "https://github.com/philnash/ruby-quick-test/issues",
   "author": "Phil Nash",
   "activationEvents": [
-    "ruby-quick-test:run-tests"
+    "ruby-quick-test:run-tests",
+    "ruby-quick-test:run-single"
   ],
   "repository": "https://github.com/philnash/ruby-quick-test",
   "license": "MIT",

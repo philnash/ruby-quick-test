@@ -18,9 +18,13 @@ class TestRunner
   exit: (code) =>
     @returnCallback()
 
-  processParams: ->
+  processParams: (lineNumber) ->
+    fileArg = if lineNumber
+      "#{@testFile}:#{lineNumber}"
+    else
+      @testFile
     command: @command
-    args: @args.concat(@testFile)
+    args: @args.concat(fileArg)
     options:
       cwd: atom.project.getPath()
     stdout: @collectResults
@@ -30,9 +34,9 @@ class TestRunner
   returnCallback: =>
     @callback(@testFile, @testResult)
 
-  runTests: ->
+  runTests: (lineNumber) ->
     @testResult = ''
-    @runCommand(@processParams())
+    @runCommand(@processParams(lineNumber))
     @returnCallback()
 
   runCommand: (params) ->
