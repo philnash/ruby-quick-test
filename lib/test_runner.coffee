@@ -6,10 +6,11 @@ class TestRunner
   command: 'ruby'
   process: BufferedProcess
 
-  constructor: (testFile, callback)->
+  constructor: (testFile, callback, opts)->
     @testResult = ''
     @callback = callback
     @testFile = testFile
+    @opts = opts || {}
 
   collectResults: (output) =>
     @testResult += output.toString()
@@ -18,10 +19,9 @@ class TestRunner
   exit: (code) =>
     @returnCallback()
 
-  processParams: (opts) ->
-    opts = opts || {}
-    fileArg = if opts.lineNumber
-      "#{@testFile}:#{opts.lineNumber}"
+  processParams: ->
+    fileArg = if @opts.lineNumber
+      "#{@testFile}:#{@opts.lineNumber}"
     else
       @testFile
     command: @command
@@ -35,9 +35,9 @@ class TestRunner
   returnCallback: =>
     @callback(@testFile, @testResult)
 
-  runTests: (opts) ->
+  runTests: ->
     @testResult = ''
-    @runCommand(@processParams(opts))
+    @runCommand(@processParams())
     @returnCallback()
 
   runCommand: (params) ->

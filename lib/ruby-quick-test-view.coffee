@@ -42,10 +42,11 @@ class RubyQuickTestView extends View
   newTestRunner: (klass, opts)->
     opts = opts || {}
     delete @testRunner if @testRunner?
-    @testRunner = new klass(@activeFile(), @render)
-
     lineNumber = opts.single and @getLineNumber()
-    @testRunner.runTests(lineNumber: lineNumber)
+    opts = {lineNumber: lineNumber}
+    @testRunner = new klass(@activeFile(), @render, opts)
+
+    @testRunner.runTests()
     @showPanel()
 
   runTests: (e)=>
