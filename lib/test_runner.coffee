@@ -19,7 +19,7 @@ class TestRunner
     @returnCallback()
 
   processParams: ->
-    command: atom.config.get("ruby-quick-test.rspecCommand") || @command
+    command: @command
     args: @args.concat(@testFile)
     options:
       cwd: atom.project.getPath()
@@ -47,7 +47,7 @@ class TestRunner
 
 
 class RspecTestRunner extends TestRunner
-  command: 'rspec'
+  command: atom.config.get("ruby-quick-test.rspecCommand") || 'rspec'
   args: []
 
 class CucumberTestRunner extends TestRunner
