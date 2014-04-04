@@ -45,7 +45,7 @@ class RubyQuickTestView extends View
     @testRunner = new klass(@activeFile(), @render)
 
     lineNumber = opts.single and @getLineNumber()
-    @testRunner.runTests(lineNumber)
+    @testRunner.runTests(lineNumber: lineNumber)
     @showPanel()
 
   runTests: (e)=>

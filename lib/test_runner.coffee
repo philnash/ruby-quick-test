@@ -18,9 +18,10 @@ class TestRunner
   exit: (code) =>
     @returnCallback()
 
-  processParams: (lineNumber) ->
-    fileArg = if lineNumber
-      "#{@testFile}:#{lineNumber}"
+  processParams: (opts) ->
+    opts = opts || {}
+    fileArg = if opts.lineNumber
+      "#{@testFile}:#{opts.lineNumber}"
     else
       @testFile
     command: @command
@@ -34,9 +35,9 @@ class TestRunner
   returnCallback: =>
     @callback(@testFile, @testResult)
 
-  runTests: (lineNumber) ->
+  runTests: (opts) ->
     @testResult = ''
-    @runCommand(@processParams(lineNumber))
+    @runCommand(@processParams(opts))
     @returnCallback()
 
   runCommand: (params) ->
