@@ -6,5 +6,6 @@
 # https://atom.io/docs/latest/advanced/keymaps
 '.editor':
   'cmd-ctrl-t': 'ruby-quick-test:run-tests'
+  'cmd-ctrl-r': 'ruby-quick-test:run-single'
   'cmd-ctrl-x': 'ruby-quick-test:toggle'
   'cmd-ctrl-e': 'ruby-quick-test:re-run-last-test'

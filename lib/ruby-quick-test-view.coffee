@@ -13,6 +13,7 @@ class RubyQuickTestView extends View
 
   initialize: (serializeState) ->
     atom.workspaceView.command "ruby-quick-test:run-tests", @runTests
+    atom.workspaceView.command "ruby-quick-test:run-single", @runSingle
     atom.workspaceView.command "ruby-quick-test:re-run-last-test", @reRunTests
     atom.workspaceView.command "ruby-quick-test:toggle", @togglePanel
     @subscribe atom.workspaceView, "core:cancel", @hidePanel
@@ -38,18 +39,37 @@ class RubyQuickTestView extends View
   togglePanel: =>
     if @hasParent() then @hidePanel() else @showPanel()
 
-  newTestRunner: (klass)->
+  newTestRunner: (klass, opts)->
+    opts = opts || {}
     delete @testRunner if @testRunner?
-    @testRunner = new klass(@activeFile(), @render)
+    lineNumber = opts.single and @getLineNumber()
+    opts = {lineNumber: lineNumber}
+    @testRunner = new klass(@activeFile(), @render, opts)
+
     @testRunner.runTests()
     @showPanel()
 
   runTests: (e)=>
+    runnerClass = @lookupRunnerClass()
+    return e.abortKeyBinding() unless runnerClass
+    @newTestRunner(runnerClass)
+
+  runSingle: (e)=>
+    runnerClass = @lookupRunnerClass()
+    return e.abortKeyBinding() unless runnerClass
+    @newTestRunner(runnerClass, single: true)
+
+  lookupRunnerClass: ->
     switch @testFileType()
-      when 'test' then @newTestRunner(TestRunner)
-      when 'spec' then @newTestRunner(RspecTestRunner)
-      when 'feature' then @newTestRunner(CucumberTestRunner)
-      else e.abortKeyBinding()
+      when 'test' then TestRunner
+      when 'spec' then RspecTestRunner
+      when 'feature' then CucumberTestRunner
+      else null
+
+  getLineNumber: ->
+    editor = atom.workspace.getActiveEditor()
+    cursor = editor.getCursor()
+    cursor.getScreenRow() + 1
 
   reRunTests: (e)=>
     if @testRunner?
