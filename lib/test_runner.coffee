@@ -1,10 +1,9 @@
 {BufferedProcess} = require 'atom'
-ChildProcess = require 'child_process'
 
 class TestRunner
   args: ['-I', 'test']
   command: 'ruby'
-  process: BufferedProcess
+  processClass: BufferedProcess
 
   constructor: (testFile, callback)->
     @testResult = ''
@@ -19,8 +18,8 @@ class TestRunner
     @returnCallback()
 
   processParams: ->
-    command: @command
-    args: @args.concat(@testFile)
+    command: "bash"
+    args: ["-l"]
     options:
       cwd: atom.project.getPath()
     stdout: @collectResults
@@ -32,19 +31,17 @@ class TestRunner
 
   runTests: ->
     @testResult = ''
-    @runCommand(@processParams())
+    @executeProcess()
     @returnCallback()
 
-  runCommand: (params) ->
-    command = "#{params.command} #{params.args}"
-    spawn = ChildProcess.spawn
-    terminal = spawn("bash", ["-l"])
-    terminal.on 'close', params.exit
-    terminal.stdout.on 'data', params.stdout
-    terminal.stderr.on 'data', params.stderr
-    terminal.stdin.write("cd #{params.options.cwd} && #{command}\n")
-    terminal.stdin.write("exit\n")
+  executeProcess: ->
+    process = new @processClass @processParams()
+    stdin = process.process.stdin
+    stdin.write "#{@fullCommand()} && exit\n"
 
+  fullCommand: ->
+    args = @args.concat(@testFile)
+    "#{@command} #{args}"
 
 class RspecTestRunner extends TestRunner
   command: 'rspec'
