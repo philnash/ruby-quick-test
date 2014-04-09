@@ -3,7 +3,6 @@
 class TestRunner
   args: ['-I', 'test']
   command: 'ruby'
-  processClass: BufferedProcess
 
   constructor: (testFile, callback)->
     @testResult = ''
