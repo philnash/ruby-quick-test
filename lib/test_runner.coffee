@@ -3,7 +3,6 @@
 class TestRunner
   args: ['-I', 'test']
   command: 'ruby'
-  process: BufferedProcess
 
   constructor: (testFile, callback)->
     @testResult = ''
@@ -18,21 +17,49 @@ class TestRunner
     @returnCallback()
 
   processParams: ->
-    command: @command
-    args: @args.concat(@testFile)
-    options:
-      cwd: atom.project.getPath()
-    stdout: @collectResults
-    stderr: @collectResults
-    exit: @exit
+    command: @fullCommand(),
+    cwd:     atom.project.getPath(),
+    stdout:  @collectResults,
+    stderr:  @collectResults,
+    exit:    @exit
 
   returnCallback: =>
     @callback(@testFile, @testResult)
 
   runTests: ->
     @testResult = ''
-    new @process @processParams()
+    ProcessRunner.run(@processParams())
     @returnCallback()
+
+  fullCommand: ->
+    args = @args.concat(@testFile)
+    "#{@command} #{args}"
+
+class ProcessRunner
+  @run: (opts) ->
+    p = new ProcessRunner(opts)
+    p.run()
+
+  constructor: (opts) ->
+    @cwd = opts.cwd
+    @command = opts.command
+    @stdout = opts.stdout
+    @stderr = opts.stderr
+    @exit = opts.exit
+
+  run: ->
+    p = new BufferedProcess(@processParams())
+    stdin = p.process.stdin
+    stdin.write "#{@command} && exit\n"
+
+  processParams: ->
+    command: "bash"
+    args: ["-l"]
+    options:
+      cwd: @cwd
+    stdout: @stdout
+    stderr: @stderr
+    exit: @exit
 
 class RspecTestRunner extends TestRunner
   command: 'rspec'
@@ -44,5 +71,6 @@ class CucumberTestRunner extends TestRunner
 
 module.exports =
   TestRunner: TestRunner
+  ProcessRunner: ProcessRunner
   RspecTestRunner: RspecTestRunner
   CucumberTestRunner: CucumberTestRunner

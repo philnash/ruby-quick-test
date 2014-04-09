@@ -1,5 +1,5 @@
 {BufferedProcess} = require 'atom'
-{TestRunner}      = require '../lib/test_runner'
+{TestRunner, ProcessRunner} = require '../lib/test_runner'
 
 describe "TestRunner", ->
 
@@ -18,10 +18,8 @@ describe "TestRunner", ->
   describe '::processParams', ->
     it 'contains a parameters object', ->
       object =
-        command: @runner.command
-        args: @runner.args.concat(@runner.testFile)
-        options:
-          cwd: atom.project.getPath()
+        command: @runner.fullCommand()
+        cwd: atom.project.getPath()
         stdout: @runner.collectResults
         stderr: @runner.collectResults
         exit: @runner.exit
@@ -40,11 +38,10 @@ describe "TestRunner", ->
       expect(@runner.returnCallback).toHaveBeenCalled()
 
   describe '::runTests', ->
-
-    it "creates a BufferedProcess", ->
-      spyOn @runner, 'process'
+    it "runs a ProcessRunner", ->
+      spyOn(ProcessRunner, 'run').andCallThrough()
       @runner.runTests()
-      expect(@runner.process).toHaveBeenCalledWith @runner.processParams()
+      expect(ProcessRunner.run).toHaveBeenCalledWith(@runner.processParams())
 
     it "resets the ::testResult string", ->
       @runner.testResult = "Previous test results"
