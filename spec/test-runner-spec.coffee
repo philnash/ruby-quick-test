@@ -1,6 +1,5 @@
 {BufferedProcess} = require 'atom'
-testRunnerNamespace = require '../lib/test_runner'
-{TestRunner, ProcessRunner} = testRunnerNamespace
+{TestRunner, ProcessRunner} = require '../lib/test_runner'
 
 describe "TestRunner", ->
 
