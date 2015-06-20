@@ -10,9 +10,9 @@
   "homepage": "https://github.com/philnash/ruby-quick-test",
   "bugs": "https://github.com/philnash/ruby-quick-test/issues",
   "author": "Phil Nash",
-  "activationEvents": [
-    "ruby-quick-test:run-tests"
-  ],
+  "activationCommands": {
+    "atom-text-editor": "ruby-quick-test:run-tests"
+  },
   "repository": "https://github.com/philnash/ruby-quick-test",
   "license": "MIT",
   "engines": {
