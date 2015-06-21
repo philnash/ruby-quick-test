@@ -16,7 +16,7 @@
   "repository": "https://github.com/philnash/ruby-quick-test",
   "license": "MIT",
   "engines": {
-    "atom": ">0.50.0"
+    "atom": ">0.210.0"
   },
   "dependencies": {
     "space-pen": "^5.1.1"
