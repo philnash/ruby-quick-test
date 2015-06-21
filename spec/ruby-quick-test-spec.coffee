@@ -1,4 +1,3 @@
-{WorkspaceView, Workspace, Editor} = require 'atom'
 RubyQuickTest = require '../lib/ruby-quick-test'
 
 # Use the command `window:run-package-specs` (cmd-alt-ctrl-p) to run specs.

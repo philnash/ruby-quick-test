@@ -18,5 +18,7 @@
   "engines": {
     "atom": ">0.50.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "space-pen": "^5.1.1"
+  }
 }

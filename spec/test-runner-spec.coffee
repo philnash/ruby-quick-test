@@ -21,7 +21,7 @@ describe "TestRunner", ->
         command: @runner.command
         args: @runner.args.concat(@runner.testFile)
         options:
-          cwd: atom.project.getPath()
+          cwd: atom.project.getPaths()[0]
         stdout: @runner.collectResults
         stderr: @runner.collectResults
         exit: @runner.exit

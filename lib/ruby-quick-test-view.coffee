@@ -1,4 +1,4 @@
-{$, View} = require 'atom'
+{View} = require 'space-pen'
 {TestRunner, RspecTestRunner, CucumberTestRunner} = require './test_runner'
 
 module.exports =
@@ -12,10 +12,13 @@ class RubyQuickTestView extends View
         @pre '', outlet: 'results'
 
   initialize: (serializeState) ->
-    atom.workspaceView.command "ruby-quick-test:run-tests", @runTests
-    atom.workspaceView.command "ruby-quick-test:re-run-last-test", @reRunTests
-    atom.workspaceView.command "ruby-quick-test:toggle", @togglePanel
-    @subscribe atom.workspaceView, "core:cancel", @hidePanel
+    atom.commands.add(
+      "atom-workspace",
+      "ruby-quick-test:run-tests": @runTests,
+      "ruby-quick-test:re-run-last-test": @reRunTests,
+      "ruby-quick-test:toggle": @togglePanel,
+      "core:cancel": @hidePanel
+    )
 
   # Returns an object that can be retrieved when package is activated
   serialize: ->
@@ -33,7 +36,7 @@ class RubyQuickTestView extends View
     @detach() if @hasParent()
 
   showPanel: =>
-    atom.workspaceView.prependToBottom(this) unless @hasParent()
+    atom.workspace.addBottomPanel({item: this}) unless @hasParent()
 
   togglePanel: =>
     if @hasParent() then @hidePanel() else @showPanel()
@@ -59,7 +62,7 @@ class RubyQuickTestView extends View
       e.abortKeyBinding()
 
   activeFile: ->
-    atom.project.relativize(atom.workspace.getActiveEditor().buffer.file.path)
+    atom.project.relativize(atom.workspace.getActiveTextEditor().buffer.file.path)
 
   testFileType: ->
     if matches = @activeFile().match(/_(test|spec)\.rb$/)
